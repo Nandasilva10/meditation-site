@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meditation Ring</title>
+<style>
+:root {
+  --bg: #efe7ef; --disc: #2e1f45;
+  --c1: #d9772b; --c2: #b83a68; --c3: #5a46b8;
+  --halo: rgba(217,119,43,.35);
+  --r: min(32vmin, 320px);
+  color-scheme: light;
+}
+@media ring {
+  :root {
+    --bg: #08091a; --disc: #02030a;
+    --c1: #ffb45e; --c2: #ff4f86; --c3: #6d5cff;
+    --halo: rgba(255,180,94,.4);
+    color-scheme: dark;
+  }
+}
+
+html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); }
+.scene { position: fixed; inset: 0; display: grid; pointer-events: none; }
+.scene > * { grid-area: 1 / 1; place-self: center; }
+
+
+.disc {
+  width: var(--r); height: var(--r); border-radius: 50%;
+  background: var(--disc);
+  box-shadow: 0 0 0 1px var(--c1), 0 0 40px 6px var(--halo), 0 0 150px 34px var(--halo);
+  animation: pulse 8s ease-in-out infinite alternate;
+}
+@keyframes pulse {
+  to { transform: scale(1.04); box-shadow: 0 0 0 1px var(--c1), 0 0 60px 10px var(--halo), 0 0 220px 54px var(--halo); }
+}
+
+
+.arc {
+  width: calc(var(--r) * var(--s)); height: calc(var(--r) * var(--s));
+  box-sizing: border-box; border-radius: 50%;
+  border: 3px solid transparent; border-top-color: var(--c); border-right-color: var(--c);
+  animation: spin var(--t) linear infinite, flare 5s ease-in-out infinite;
+}
+.a1 { --s: 1.12; --c: var(--c1); --t: 14s; }
+.a2 { --s: 1.3;  --c: var(--c2); --t: 23s; animation-direction: reverse, normal; animation-delay: 0s, -2s; }
+.a3 { --s: 1.55; --c: var(--c1); --t: 37s; animation-delay: 0s, -3.5s; }
+@keyframes flare { 0%, 100% { opacity: .15; } 50% { opacity: .95; } }
+
+
+.tilt {
+  width: calc(var(--r) * var(--s)); height: calc(var(--r) * var(--s));
+  transform: rotate(var(--tilt)) scaleY(var(--e));
+}
+.orbit { width: 100%; height: 100%; border-radius: 50%; animation: spin var(--t) linear infinite; }
+.orbit i {
+  position: absolute; top: -3px; left: calc(50% - 3px);
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--c); box-shadow: 0 0 12px 3px var(--c);
+}
+.t1 { --s: 1.7; --e: .55; --tilt: 20deg;  --c: var(--c1); --t: 9s; }
+.t2 { --s: 2.2; --e: .7;  --tilt: -35deg; --c: var(--c2); --t: 16s; }
+.t3 { --s: 2.8; --e: .45; --tilt: 70deg;  --c: var(--c3); --t: 22s; }
+.t2 .orbit { animation-direction: reverse; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+
+.wave {
+  width: var(--r); height: var(--r); box-sizing: border-box; border-radius: 50%;
+  border: 2px solid var(--c3); opacity: 0;
+  animation: wave 7s ease-out infinite;
+}
+.w2 { animation-delay: -2.3s; }
+.w3 { animation-delay: -4.6s; }
+@keyframes wave { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(7); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .disc, .arc, .orbit, .wave { animation: none; }
+}
+</style>
+</head>
+<body aria-hidden="true">
+  <div class="scene">
+    <div class="wave w1"></div>
+    <div class="wave w2"></div>
+    <div class="wave w3"></div>
+
+    <div class="tilt t1"><div class="orbit"><i></i></div></div>
+    <div class="tilt t2"><div class="orbit"><i></i></div></div>
+    <div class="tilt t3"><div class="orbit"><i></i></div></div>
+
+    <div class="arc a1"></div>
+    <div class="arc a2"></div>
+    <div class="arc a3"></div>
+
+    <div class="disc"></div>
+  </div>
+</body>
+</html>
